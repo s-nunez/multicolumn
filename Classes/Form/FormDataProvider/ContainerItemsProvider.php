@@ -78,7 +78,8 @@ class ContainerItemsProvider
         $this->itemsCount = count($this->items);
         $this->config = $itemsProc['config'];
         $this->row = $itemsProc['row'];
-        $this->LL = MulticolumnUtility::includeBeLocalLang($this->config['multicolumnLL']);
+        //$this->LL = MulticolumnUtility::includeBeLocalLang($this->config['multicolumnLL']);
+        $this->LL = [];
 
         call_user_func([
             self::class,

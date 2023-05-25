@@ -152,6 +152,8 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
      */
     public function addDeleteWarning(array $params)
     {
+        //TODO adjust me
+        /*
         if (!$params[0] == 'tt_content') {
             return;
         }
@@ -202,6 +204,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
 
             unset($llGlobal);
         }
+        */
     }
 
     /**
@@ -229,10 +232,10 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             $multicolumnColPos = MulticolumnUtility::colPosStart + $columnIndex;
 
             $splitedColumnConf = $this->layoutConfigurationSplited[$columnIndex];
-            if ($splitedColumnConf['columnMeasure'] == '%') {
-                $columnWidth = $splitedColumnConf['columnWidth'] ? $splitedColumnConf['columnWidth'] : round(100 / $numberOfColumns);
+            if (isset($splitedColumnConf['columnMeasure']) && $splitedColumnConf['columnMeasure'] === '%') {
+                $columnWidth = $splitedColumnConf['columnWidth'] ?? round(100 / $numberOfColumns);
             } else {
-                $columnWidth = $splitedColumnConf['columnWidth'] ? round($splitedColumnConf['columnWidth'] * 100 / $widthOfAllColumnsInPx) : round(100 / $numberOfColumns);
+                $columnWidth = isset($splitedColumnConf['columnWidth']) ? round($splitedColumnConf['columnWidth'] * 100 / $widthOfAllColumnsInPx) : round(100 / $numberOfColumns);
             }
 
             //create header
@@ -261,7 +264,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
      */
     protected function buildColumn($columnWidth, $columnIndex, $colPos, &$markup)
     {
-        $columnLabel = $this->getLanguageService()->getLLL('cms_layout.columnTitle', $this->LL) . ' ' . ($columnIndex + 1);
+        $columnLabel = $this->getLanguageService()->getLL('cms_layout.columnTitle') . ' ' . ($columnIndex + 1);
         $language = $this->multiColCe['sys_language_uid'];
 
         $markup .= '<td id="column_' . (int)$this->multiColCe['uid'] . '_' . (int)$colPos . '" '
@@ -329,8 +332,8 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
             $view->assignMultiple([
-                'title' => $this->getLanguageService()->getLLL('cms_layout.lostElements.title', $this->LL),
-                'message' => $this->getLanguageService()->getLLL('cms_layout.lostElements.message', $this->LL),
+                'title' => $this->getLanguageService()->getLL('cms_layout.lostElements.title'),
+                'message' => $this->getLanguageService()->getLL('cms_layout.lostElements.message'),
                 'state' => InfoboxViewHelper::STATE_WARNING,
             ]);
             $markup .= $view->render();
@@ -361,7 +364,7 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
                     . ' id="element_' . $row['tx_multicolumn_parentid'] . '_' . $row['colPos'] . '_' . $row['uid'] . '"'
                     . ' class="t3-page-ce t3js-page-ce contentElement item' . $item . $statusHidden . '" data-uid="' . $row['uid'] . '">';
 
-                $space = $this->pObj->tt_contentConfig['showInfo'] ? 15 : 5;
+                $space = !empty($this->pObj->tt_contentConfig['showInfo']) ? 15 : 5;
 
                 // render diffrent header
                 if ($lostElements) {
@@ -450,11 +453,14 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
 
     protected function restoreOrginalDeleteWarning(array $LL)
     {
+        // TODO adjust me
+        /*
         foreach ($LL as $llKey => $ll) {
             if ($GLOBALS['LOCAL_LANG'][$llKey]['deleteWarningOrginal']) {
                 $GLOBALS['LOCAL_LANG'][$llKey]['deleteWarning'] = $GLOBALS['LOCAL_LANG'][$llKey]['deleteWarningOrginal'];
             }
         }
+        */
     }
 
     /**
