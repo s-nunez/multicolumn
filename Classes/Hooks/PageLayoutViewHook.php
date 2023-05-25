@@ -357,6 +357,9 @@ class PageLayoutViewHook implements \TYPO3\CMS\Backend\View\PageLayoutViewDrawIt
 
         $item = 0;
         foreach ($rowArr as $rKey => $row) {
+            if (!isset($row['_ORIG_uid'])) {
+                $row['_ORIG_uid'] = $row['uid'];
+            }
             if (is_array($row) && (int)$row['t3ver_state'] != 2) {
                 $statusHidden = ($this->pObj->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
 

@@ -98,7 +98,7 @@ class ContainerItemsProvider
             $record = BackendUtility::getRecord('tt_content', abs($this->row['pid']), 'pid');
             $pid = $record['pid'] ?? 0;
         }
-        if ($containers = DatabaseUtility::getContainersFromPid($pid, $this->row['sys_language_uid'][0])) {
+        if ($containers = DatabaseUtility::getContainersFromPid($pid, $this->row['sys_language_uid'])) {
             if ($this->items) {
                 $itemsUidList = $this->getItemsUidList();
             }
