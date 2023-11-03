@@ -68,13 +68,14 @@ class ContainerSectionProcessor implements DataProcessorInterface
             }
 
             $numberOfColumns = DatabaseUtility::getNumberOfColumnsFromContainer($data['data']['uid'], $data['data']);
+            $context = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
             for ($i = 0; $i < $numberOfColumns; $i++) {
                 $elements = DatabaseUtility::getContentElementsFromContainer(
                     MulticolumnUtility::colPosStart + $i,
                     $data['data']['pid'],
                     $data['data']['uid'],
                     $data['data']['sys_language_uid'],
-                    $this->getTypoScriptFrontendController()->showHiddenRecords,
+                    $context->getPropertyFromAspect('visibility', 'includeHiddenPages'),
                     'sectionIndex=1'
                 );
                 foreach ($elements as $element) {

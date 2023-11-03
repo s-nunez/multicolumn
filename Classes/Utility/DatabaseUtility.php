@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DatabaseUtility
@@ -312,7 +313,7 @@ class DatabaseUtility
             )
             ->andWhere(self::enableFields('tt_content', $showHidden))
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
     }
 
     /**
@@ -327,7 +328,8 @@ class DatabaseUtility
     {
         $enableFields = '1=1';
         if (TYPO3_MODE === 'FE') {
-            $enableFields .= $GLOBALS['TSFE']->sys_page->enableFields($table, $showHidden);
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            $enableFields .= $pageRepository->enableFields($table, $showHidden);
         }
 
         return $enableFields;

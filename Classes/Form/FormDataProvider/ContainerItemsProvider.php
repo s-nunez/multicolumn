@@ -78,7 +78,8 @@ class ContainerItemsProvider
         $this->itemsCount = count($this->items);
         $this->config = $itemsProc['config'];
         $this->row = $itemsProc['row'];
-        $this->LL = MulticolumnUtility::includeBeLocalLang($this->config['multicolumnLL']);
+        //$this->LL = MulticolumnUtility::includeBeLocalLang($this->config['multicolumnLL']);
+        $this->LL = [];
 
         call_user_func([
             self::class,
@@ -97,7 +98,7 @@ class ContainerItemsProvider
             $record = BackendUtility::getRecord('tt_content', abs($this->row['pid']), 'pid');
             $pid = $record['pid'] ?? 0;
         }
-        if ($containers = DatabaseUtility::getContainersFromPid($pid, $this->row['sys_language_uid'][0])) {
+        if ($containers = DatabaseUtility::getContainersFromPid($pid, $this->row['sys_language_uid'])) {
             if ($this->items) {
                 $itemsUidList = $this->getItemsUidList();
             }

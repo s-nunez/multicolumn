@@ -69,7 +69,7 @@ class FlexFormUtility
         $flexform = [];
 
         if (is_array($this->flex['data'])) {
-            if ($key && $this->flex['data'][$key]['lDEF']) {
+            if ($key && !empty($this->flex['data'][$key]['lDEF'])) {
                 foreach ($this->flex['data'][$key]['lDEF'] as $flexKey => $value) {
                     if ($value['vDEF']) {
                         $flexform[$flexKey] = $value['vDEF'];
@@ -144,7 +144,7 @@ class FlexFormUtility
     protected function filterItems(array &$items, $filterList)
     {
         foreach ($items as $itemKey => $item) {
-            if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($filterList, str_replace('.', null, $itemKey))) {
+            if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($filterList, str_replace('.', '', $itemKey))) {
                 unset($items[$itemKey]);
             }
         }
